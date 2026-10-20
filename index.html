@@ -1,0 +1,800 @@
+<meta charset="utf-8">
+<!--
+  CRONOLOGIA DE PRESÉPIOS · versão interativa
+  Colar tudo num bloco «HTML personalizado» do WordPress (não no editor visual).
+  Precisa de JavaScript: funciona em WordPress.org (instalado no seu servidor)
+  ou em WordPress.com com plano Business/Creator. No plano gratuito do
+  WordPress.com use a outra versão (sem JavaScript).
+  Largura: a classe "pc-largo" alarga a tabela para além da coluna de texto.
+  Se o tema tiver barra lateral e a tabela ficar por cima dela, apague "pc-largo".
+  Para acrescentar registos, edite a lista window.PC_DADOS mais abaixo.
+-->
+<div id="pc-cronologia" class="pc-largo">
+<style>
+#pc-cronologia{--pc-tinta:#222;--pc-suave:#5c5c5c;--pc-linha:#d9d9d9;--pc-acento:#1f4e9a;--pc-acento-claro:#eef2f9;--pc-realce:#fde68a;--pc-fundo:#fff;--pc-serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;container-type:inline-size;box-sizing:border-box;color:var(--pc-tinta);background:var(--pc-fundo);font-size:16px;line-height:1.5;text-align:left;padding:28px 24px 24px;margin-top:1.5em;margin-bottom:1.5em}
+#pc-cronologia.pc-largo{width:min(1180px,calc(100vw - 40px));max-width:none;margin-left:calc(50% - min(590px,50vw - 20px));margin-right:0}
+#pc-cronologia *,#pc-cronologia *::before,#pc-cronologia *::after{box-sizing:border-box}
+#pc-cronologia [hidden]{display:none!important}
+#pc-cronologia .pc-sr{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+#pc-cronologia button{font:inherit;color:inherit;letter-spacing:normal;text-transform:none;text-shadow:none;box-shadow:none;border-radius:0;min-height:0;min-width:0;width:auto;line-height:1.3;margin:0;cursor:pointer;background:none;border:0;padding:0}
+#pc-cronologia button:disabled{cursor:default}
+#pc-cronologia :focus-visible{outline:2px solid var(--pc-acento);outline-offset:2px}
+#pc-cronologia a{color:var(--pc-acento);text-decoration:underline;text-underline-offset:2px}
+#pc-cronologia mark{background:var(--pc-realce);color:inherit;padding:0 1px}
+#pc-cronologia .pc-cab{max-width:68ch;margin:0 0 8px}
+#pc-cronologia .pc-titulo{font-size:clamp(24px,3.2vw,34px);line-height:1.15;font-weight:600;letter-spacing:-.01em;margin:0 0 10px;padding:0;color:var(--pc-tinta)}
+#pc-cronologia .pc-entrada{margin:0;color:var(--pc-suave);font-size:16px}
+#pc-cronologia .pc-tl{margin:28px 0 24px}
+#pc-cronologia .pc-tl-titulo{margin:0 0 6px;font-size:13px;color:var(--pc-suave)}
+#pc-cronologia .pc-tl-trilho{position:relative}
+#pc-cronologia .pc-tl-pontos{position:relative;height:40px;border-bottom:1px solid var(--pc-tinta)}
+#pc-cronologia .pc-tl-periodos{position:relative;height:16px}
+#pc-cronologia .pc-tl-escala{position:relative;height:22px}
+#pc-cronologia .pc-tl-marca{position:absolute;top:-16px;width:1px;height:5px;background:var(--pc-tinta)}
+#pc-cronologia .pc-tl-ano{position:absolute;top:0;transform:translateX(-50%);font-size:12px;color:var(--pc-suave);font-variant-numeric:tabular-nums;white-space:nowrap}
+#pc-cronologia .pc-tl-ponto{position:absolute;width:18px;height:18px;margin-left:-9px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+#pc-cronologia .pc-tl-ponto::before{content:"";width:12px;height:12px;border-radius:50%;background:var(--pc-acento);border:2px solid var(--pc-acento);transition:transform .15s}
+#pc-cronologia .pc-tl-ponto.pc-tl-incerta::before{background:var(--pc-fundo)}
+#pc-cronologia .pc-tl-ponto:hover::before,#pc-cronologia .pc-tl-ponto:focus-visible::before{transform:scale(1.35)}
+#pc-cronologia .pc-tl-barra{position:absolute;top:4px;height:10px;border-radius:5px;background:var(--pc-acento-claro);border:2px solid var(--pc-acento)}
+#pc-cronologia .pc-tl-barra:hover,#pc-cronologia .pc-tl-barra:focus-visible{background:var(--pc-acento)}
+#pc-cronologia .pc-tl-fora{opacity:.22}
+#pc-cronologia .pc-tl-dica{position:absolute;z-index:5;max-width:260px;padding:6px 10px;background:var(--pc-tinta);color:#fff;font-size:13px;line-height:1.35;pointer-events:none;white-space:normal}
+#pc-cronologia .pc-tl-dica strong{display:block;font-weight:600}
+#pc-cronologia .pc-tl-legenda{display:flex;flex-wrap:wrap;gap:6px 20px;margin:4px 0 0;font-size:13px;color:var(--pc-suave)}
+#pc-cronologia .pc-tl-legenda span{display:inline-flex;align-items:center;gap:6px}
+#pc-cronologia .pc-leg{display:inline-block;width:12px;height:12px;border-radius:50%;border:2px solid var(--pc-acento);background:var(--pc-acento)}
+#pc-cronologia .pc-leg-incerta{background:var(--pc-fundo)}
+#pc-cronologia .pc-leg-periodo{width:24px;height:10px;border-radius:5px;background:var(--pc-acento-claro)}
+#pc-cronologia .pc-filtros{display:grid;grid-template-columns:minmax(0,2fr) repeat(3,minmax(0,1fr));gap:12px 16px;align-items:end;margin:0 0 18px}
+#pc-cronologia .pc-campo label{display:block;margin:0 0 4px;font-size:13px;font-weight:600;color:var(--pc-tinta)}
+#pc-cronologia .pc-campo input,#pc-cronologia .pc-campo select,#pc-cronologia .pc-rodape select{display:block;width:100%;height:40px;margin:0;padding:0 12px;font:inherit;font-size:15px;color:var(--pc-tinta);background-color:var(--pc-fundo);border:1px solid #8a8a8a;border-radius:2px;box-shadow:none;max-width:none}
+#pc-cronologia select{-webkit-appearance:none;appearance:none;padding-right:34px!important;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0h10L5 6z' fill='%23222'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;text-overflow:ellipsis}
+#pc-cronologia .pc-barra{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:8px 16px;margin:0 0 6px}
+#pc-cronologia .pc-estado{margin:0;font-size:14px;color:var(--pc-suave)}
+#pc-cronologia .pc-btn-texto{color:var(--pc-acento);font-size:14px;font-weight:600;text-decoration:underline;text-underline-offset:3px;padding:4px 0}
+#pc-cronologia .pc-btn-texto:hover{text-decoration-thickness:2px}
+#pc-cronologia .pc-btn-texto:disabled{color:#9a9a9a;text-decoration:none}
+#pc-cronologia .pc-tabela{width:100%;border-collapse:collapse;border:0;margin:0;font-size:15px;line-height:1.45;table-layout:auto;background:none}
+#pc-cronologia .pc-tabela caption{caption-side:top}
+#pc-cronologia .pc-tabela tr,#pc-cronologia .pc-tabela tbody tr{background:transparent}
+#pc-cronologia .pc-tabela th,#pc-cronologia .pc-tabela td{border:0;background:transparent;text-align:left;color:var(--pc-tinta)}
+#pc-cronologia .pc-tabela th{font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;vertical-align:bottom;padding:10px 14px 10px 0;border-bottom:2px solid var(--pc-tinta)}
+#pc-cronologia .pc-tabela td{vertical-align:top;padding:16px 14px 16px 0;border-bottom:1px solid var(--pc-linha)}
+#pc-cronologia .pc-c-data{width:16%}
+#pc-cronologia .pc-c-acao{width:8.5em;white-space:nowrap;text-align:right!important;padding-right:0!important}
+#pc-cronologia .pc-ordenar{font-weight:inherit;text-transform:inherit;letter-spacing:inherit;display:inline-flex;gap:6px;align-items:center}
+#pc-cronologia th[aria-sort="ascending"] .pc-seta::after{content:"↑"}
+#pc-cronologia th[aria-sort="descending"] .pc-seta::after{content:"↓"}
+#pc-cronologia .pc-data{font-variant-numeric:tabular-nums;font-weight:600}
+#pc-cronologia .pc-vazio{color:var(--pc-suave)}
+#pc-cronologia .pc-alternar{color:var(--pc-acento);font-size:14px;font-weight:600;white-space:nowrap;padding:2px 0;display:inline-flex;align-items:center;gap:8px}
+#pc-cronologia .pc-alternar::after{content:"";width:7px;height:7px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:translateY(-2px) rotate(45deg);transition:transform .2s}
+#pc-cronologia .pc-alternar[aria-expanded="true"]::after{transform:translateY(2px) rotate(-135deg)}
+#pc-cronologia .pc-alternar:hover .pc-alt-txt{text-decoration:underline;text-underline-offset:3px}
+#pc-cronologia .pc-linha.pc-aberta td{border-bottom-color:transparent}
+#pc-cronologia .pc-detalhe td{padding:0 0 0 0;border-bottom:1px solid var(--pc-linha)}
+#pc-cronologia .pc-det{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,2fr);gap:20px 36px;background:var(--pc-acento-claro);padding:20px 24px;margin:0 0 16px}
+#pc-cronologia .pc-det>div:only-child{grid-column:1/-1;max-width:70ch}
+#pc-cronologia .pc-det h4{margin:0 0 6px;padding:0;font-size:13px;font-weight:700;color:var(--pc-suave);letter-spacing:normal;text-transform:none;font-family:inherit}
+#pc-cronologia .pc-det p{margin:0 0 .75em}
+#pc-cronologia .pc-det-meta h4{margin-top:14px}
+#pc-cronologia .pc-det-meta h4:first-child{margin-top:0}
+#pc-cronologia .pc-det ul{margin:0;padding:0 0 0 18px}
+#pc-cronologia .pc-det blockquote{margin:0;padding:0 0 0 16px;border:0;border-left:3px solid var(--pc-acento);font-family:var(--pc-serif);font-size:17px;line-height:1.65;font-style:normal;font-weight:400;color:var(--pc-tinta);background:none;quotes:none;max-width:68ch}
+#pc-cronologia .pc-det blockquote::before,#pc-cronologia .pc-det blockquote::after{content:none}
+#pc-cronologia .pc-det blockquote p{margin:0 0 .8em;font-size:inherit}
+#pc-cronologia .pc-nota{font-size:13px;color:var(--pc-suave);border-top:1px dashed #b9b9b9;padding-top:8px;margin-top:12px!important}
+#pc-cronologia .pc-sem{padding:28px 0!important;color:var(--pc-suave)}
+#pc-cronologia .pc-destaque td{animation:pc-piscar 1.8s ease-out}
+@keyframes pc-piscar{0%,35%{background:var(--pc-realce)}100%{background:transparent}}
+#pc-cronologia .pc-rodape{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px 24px;margin-top:16px;font-size:14px}
+#pc-cronologia .pc-intervalo{margin:0;font-variant-numeric:tabular-nums}
+#pc-cronologia .pc-paginas{display:flex;gap:18px}
+#pc-cronologia .pc-paginas button{padding:6px 2px;color:var(--pc-tinta)}
+#pc-cronologia .pc-paginas button:hover:not(:disabled){text-decoration:underline;text-underline-offset:3px}
+#pc-cronologia .pc-paginas button:disabled{color:#a5a5a5}
+#pc-cronologia .pc-acoes{display:flex;flex-wrap:wrap;align-items:center;gap:10px 20px}
+#pc-cronologia .pc-acoes label{display:flex;align-items:center;gap:8px;margin:0;font-size:14px;font-weight:400}
+#pc-cronologia .pc-rodape select{width:auto;height:34px;font-size:14px}
+#pc-cronologia .pc-btn{border:1px solid var(--pc-tinta);padding:7px 14px;font-size:14px;background:var(--pc-fundo);color:var(--pc-tinta)}
+#pc-cronologia .pc-btn:hover{background:var(--pc-tinta);color:var(--pc-fundo)}
+@container (max-width:760px){
+#pc-cronologia .pc-filtros{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+#pc-cronologia .pc-campo-q{grid-column:1/-1}
+#pc-cronologia .pc-tabela thead{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+#pc-cronologia .pc-tabela,#pc-cronologia .pc-tabela tbody,#pc-cronologia .pc-tabela tr,#pc-cronologia .pc-tabela td{display:block;width:100%}
+#pc-cronologia .pc-linha{border-top:1px solid var(--pc-linha);padding:14px 0 10px}
+#pc-cronologia .pc-tabela tbody .pc-linha:first-child{border-top:2px solid var(--pc-tinta)}
+#pc-cronologia .pc-linha td{border:0;padding:3px 0}
+#pc-cronologia .pc-linha td[data-rotulo]::before{content:attr(data-rotulo);display:block;font-size:12px;font-weight:600;color:var(--pc-suave)}
+#pc-cronologia .pc-linha td.pc-c-data::before{display:none}
+#pc-cronologia .pc-c-data .pc-data{font-size:17px}
+#pc-cronologia .pc-c-acao{text-align:left!important;padding-top:8px!important}
+#pc-cronologia .pc-detalhe td{border:0}
+#pc-cronologia .pc-det{grid-template-columns:minmax(0,1fr);padding:16px}
+}
+@container (max-width:480px){
+#pc-cronologia .pc-filtros{grid-template-columns:minmax(0,1fr)}
+#pc-cronologia .pc-rodape{flex-direction:column;align-items:flex-start}
+}
+@media (max-width:520px){
+#pc-cronologia{padding:20px 14px}
+}
+@media (prefers-reduced-motion:reduce){
+#pc-cronologia *{transition:none!important;animation:none!important}
+#pc-cronologia .pc-destaque td{background:var(--pc-realce)}
+}
+@media print{
+#pc-cronologia .pc-tl,#pc-cronologia .pc-filtros,#pc-cronologia .pc-rodape,#pc-cronologia .pc-c-acao,#pc-cronologia .pc-barra button{display:none!important}
+}
+</style>
+  <div class="pc-cab">
+    <h2 class="pc-titulo">Presépios em Lisboa no século XVIII</h2>
+    <p class="pc-entrada">Cronologia de menções a presépios reunidas a partir de gazetas manuscritas, estudos de história do teatro e documentação de arquivo. Pesquise nos excertos ou filtre por década, lugar e fonte. A pesquisa ignora acentos e algumas grafias antigas: «presepio» também encontra «prezepio».</p>
+  </div>
+  <div class="pc-tl" role="group" aria-labelledby="pc-tl-titulo">
+    <p class="pc-tl-titulo" id="pc-tl-titulo">Linha do tempo, 1700–1800. Selecione um ponto para abrir o registo.</p>
+    <div class="pc-tl-trilho">
+      <div class="pc-tl-pontos"></div>
+      <div class="pc-tl-periodos"></div>
+      <div class="pc-tl-escala" aria-hidden="true"></div>
+      <div class="pc-tl-dica" role="tooltip" hidden></div>
+    </div>
+    <p class="pc-tl-legenda" aria-hidden="true"><span><i class="pc-leg"></i>data indicada na fonte</span><span><i class="pc-leg pc-leg-incerta"></i>data incerta ou deduzida</span><span><i class="pc-leg pc-leg-periodo"></i>período</span></p>
+  </div>
+  <div class="pc-filtros" role="search" aria-label="Filtrar a cronologia">
+    <div class="pc-campo pc-campo-q"><label for="pc-q">Pesquisar</label><input id="pc-q" type="search" placeholder="Ex.: Mouraria, Antunes, muzica" autocomplete="off" spellcheck="false"></div>
+    <div class="pc-campo"><label for="pc-f-decada">Década</label><select id="pc-f-decada"></select></div>
+    <div class="pc-campo"><label for="pc-f-lugar">Lugar</label><select id="pc-f-lugar"></select></div>
+    <div class="pc-campo"><label for="pc-f-fonte">Fonte</label><select id="pc-f-fonte"></select></div>
+  </div>
+  <div class="pc-barra">
+    <p class="pc-estado" aria-live="polite"></p>
+    <button type="button" class="pc-btn-texto" data-acao="abrir-todos">Abrir todos os registos</button>
+  </div>
+  <table class="pc-tabela">
+    <caption class="pc-sr">Cronologia de menções a presépios. Cada linha tem um botão que mostra o excerto da fonte, as observações e a referência completa.</caption>
+    <thead><tr>
+      <th scope="col" class="pc-c-data" aria-sort="ascending"><button type="button" class="pc-ordenar" aria-label="Data, ordenar">Data<span class="pc-seta" aria-hidden="true"></span></button></th>
+      <th scope="col">Local da apresentação</th>
+      <th scope="col">Fonte</th>
+      <th scope="col">Fonte citada</th>
+      <th scope="col" class="pc-c-acao"><span class="pc-sr">Detalhes</span></th>
+    </tr></thead>
+    <tbody><tr><td colspan="5"><noscript>Esta cronologia precisa de JavaScript para ser apresentada.</noscript></td></tr></tbody>
+  </table>
+  <div class="pc-rodape">
+    <p class="pc-intervalo"></p>
+    <div class="pc-paginas"><button type="button" data-acao="anterior">Anterior</button><button type="button" data-acao="seguinte">Seguinte</button></div>
+    <div class="pc-acoes">
+      <button type="button" class="pc-btn-texto" data-acao="limpar">Limpar filtros</button>
+      <label>Resultados por página <select id="pc-por-pagina"><option value="10">10</option><option value="25" selected>25</option><option value="50">50</option><option value="0">Todos</option></select></label>
+      <button type="button" class="pc-btn" data-acao="csv" title="Descarrega os registos que correspondem aos filtros atuais">Descarregar CSV</button>
+    </div>
+  </div>
+</div>
+<script>
+/* DADOS DA CRONOLOGIA
+   Cada registo é um bloco { ... }. Campos:
+   id (único) · data (texto mostrado) · ano · mes · dia (números, para ordenar e situar na linha do tempo)
+   ano_fim (só para períodos) · data_incerta (true = ponto vazado na linha do tempo)
+   local · lugares (lista usada no filtro «Lugar») · fonte (referência completa) · fonte_curta (usada no filtro «Fonte»)
+   fonte_citada · excerto (parágrafos separados por \n\n) · observacoes · ligacoes [{rotulo, url}] · nota_edicao */
+window.PC_DADOS = [
+  {
+    "id": "e01",
+    "data": "1700 (?)",
+    "ano": 1700,
+    "data_incerta": true,
+    "local": "Mosteiro das Religiosas do Salvador da Ordem Dominicana",
+    "lugares": [
+      "Mosteiro do Salvador"
+    ],
+    "fonte": "Academia Real da História Portuguesa (antigo possuidor), hoje na BNP: F. 4638, em microfilme na Sala de Leitura Geral ou digitalizado.",
+    "fonte_curta": "BNP, F. 4638",
+    "fonte_citada": "Notícia do primeiro presépio que houve em Lisboa, no mosteiro das freiras do Salvador",
+    "excerto": "No mosteiro de religiosas do salvador de Exª da Ordem Dominicana teve principio o primeiro prezepio que se fez nesta casa (???) o caso que foi revelado a hua religiosa de virtude do mesmo mosteiro que era a gosto que se fisese e assim se fes e costumado todos os annos em dia de Natal hirem os paracos da cidade celebrarem ali a missa a santo nacimento de Jesus Christo em louvor e (???) do mesmo senhor que hia muita gente asistilo e despois das outras hya a irmandade dos clérigos pobres cantarlhe huma missa todos os annos a mesmo mosteiro a (???) o sagrado nascimento de Deos e algumas vezes ha missa sermão este custume durou entre o anno de 634 que ali hiao a dita hirmandade (?) e da (??) não ficao fazer mais a tal missa e (???) canta isto do hiro da (???) como do mosteiro que fes a M(E) Maria Baptista Prioreza foi capitulo 22 e folhas 202 (???) estar no cartoiro do mesmo mosteiro",
+    "observacoes": "Notícia do primeiro presépio que houve em Lisboa, no mosteiro das freiras do Salvador",
+    "ligacoes": [
+      {
+        "rotulo": "Digitalização na BNP Digital (purl.pt/51180)",
+        "url": "https://purl.pt/51180"
+      }
+    ]
+  },
+  {
+    "id": "e02",
+    "data": "1706–1750",
+    "ano": 1706,
+    "ano_fim": 1750,
+    "local": "Corte / “Paço”",
+    "lugares": [
+      "Paço"
+    ],
+    "fonte": "PASSOS, Alexandre, Bonecos de Santo Aleixo: As marionetas em Portugal nos séculos XVI a XVIII e a sua influência nos títeres alentejanos, CENDREV [?], s.l., s.d., p. 69.",
+    "fonte_curta": "Passos, Alexandre (s.d.)",
+    "fonte_citada": "[desconhecido]",
+    "excerto": "p. 69: “a D. João V (…) não lhe desagradava, de quando em vez, assistir ao ‘edificante aparecimento’ dos bonifrates, preferentemente na época da Natividade, no Paço, em cujo Presépio saltitavam zangarelhando, os bonecros, possivelmente animados por algum estrangeiro estabelecido ou de passagem.”",
+    "observacoes": ""
+  },
+  {
+    "id": "e03",
+    "data": "12 de Fevereiro de 1732",
+    "ano": 1732,
+    "mes": 2,
+    "dia": 12,
+    "local": "Presépio (em casa de Francisco Tregueiros)",
+    "lugares": [
+      "Casa de Francisco Tregueiros"
+    ],
+    "fonte": "Gazetas manuscritas da Biblioteca Pública de Évora. Vols. 1, 2, 4. Biblioteca – fontes e inventários. Colibri, 2002.",
+    "fonte_curta": "Gazetas manuscritas da BPE (Colibri, 2002)",
+    "fonte_citada": "",
+    "excerto": "Fl. 25v, p. 69: \"(...) e as senhoras condessas de Aveyras, que não forão por estar de partida para Samorá para hum prezepio em casa de Francisco Tregueiros onde havia muzica e instrumentos e seis poetas que compunhão de repente: o prezepio era mui lindo, e se destribuirão todo o genero de refresco gelados e quentes com hũa magnifica cea que a Sñra. Marqueza tinha prevenido durando até as tres horas da manhãa a festa em que foi preçizo ao Conde da Eriçeyra sustentar só com poesias de repente o devido obsequio, que os poetas incognitos fazião as senhoras.\"",
+    "observacoes": "Por convite da Senhora Marquesa de Arronches e sua neta a um conjunto de famílias, no excerto descrito, todos foram a um presépio em casa de Francisco Tregueiros. Menciona-se que nesta atividade houve música e poetas. Caracteriza-se o presépio como muito lindo. A atividade durou até às três horas da manhã."
+  },
+  {
+    "id": "e04",
+    "data": "19 de Fevereiro de 1732",
+    "ano": 1732,
+    "mes": 2,
+    "dia": 19,
+    "local": "“Paço”; Presépio do Teatro do Bairro Alto",
+    "lugares": [
+      "Paço",
+      "Bairro Alto"
+    ],
+    "fonte": "Gazetas manuscritas da Biblioteca Pública de Évora. Vols. 1, 2, 4. Biblioteca – fontes e inventários. Colibri, 2002.",
+    "fonte_curta": "Gazetas manuscritas da BPE (Colibri, 2002)",
+    "fonte_citada": "",
+    "excerto": "Fl. 27, p. 71: \"A 18. houve em Sta. Clara hũa comedia, que dizem seria excellente, e entrarão com breve muitas senhoras, ainda que com difficuldade dos prelados. No dia 17 convidou a Sra. Marquesa de Fontes na sua quinta de Alcantara a 40 senhoras para a ouvirem cantar em hũa nova serenata com as filhas 2.ª e 3.ª do Conde de Villa Nova, e a Sra. Dona Vittoria de Lancastro: alguãs dançarão depois, e houve 12 bandejas de excellentes doces, bebidas, e chocolates. As outras serenatas e bailes são mais frequentadas. E a da Veneziana se fes /fl. 27/ com concurso, ainda que mais tarde.\n\nO Morgado de Oliveira teve hũa larga doença de que está melhor, e achandose num presepio com a sua familia, descuidandose os criados, fugirão as mulas, e morreo hũa na Calçada da Gloria.\"",
+    "observacoes": "Morgado de Oliveira estava muito doente (mesmo já estando melhor) estava presente num presépio com a sua família. Ao descuidar-se, os criados e as mulas fugiram sendo que uma das mulas morreu na Calçada da Gloria."
+  },
+  {
+    "id": "e05",
+    "data": "6 de Janeiro de 1733",
+    "ano": 1733,
+    "mes": 1,
+    "dia": 6,
+    "local": "“Paço”; Presépio do Teatro do Bairro Alto",
+    "lugares": [
+      "Paço",
+      "Bairro Alto"
+    ],
+    "fonte": "Gazetas manuscritas da Biblioteca Pública de Évora. Vols. 1, 2, 4. Biblioteca – fontes e inventários. Colibri, 2002.",
+    "fonte_curta": "Gazetas manuscritas da BPE (Colibri, 2002)",
+    "fonte_citada": "",
+    "excerto": "Fl. 153/154v, p. 188: \"Dom Luis da Silveira está convalecido do accidente que teve que foi só hũ desmajo naçido do abalo de hũ remedio e se confeçou geralmente a Frei Paullo : a Sñra. D. Caetana sua nora convidou todas as damas do Paço ao /fl. 154v/ prezépio do Bairro Alto donde athe as deidades dizem que comerão muito bem.\"",
+    "observacoes": "A senhora D. Caetana, a nora de Dom Luís da Silveira convidou todas as damas do Paço ao presépio do Bairro Alto onde se diz que comeram muito bem."
+  },
+  {
+    "id": "e06",
+    "data": "27 de Janeiro de 1733",
+    "ano": 1733,
+    "mes": 1,
+    "dia": 27,
+    "local": "Pátio das Comédias",
+    "lugares": [
+      "Pátio das Comédias"
+    ],
+    "fonte": "Gazetas manuscritas da Biblioteca Pública de Évora. Vols. 1, 2, 4. Biblioteca – fontes e inventários. Colibri, 2002.",
+    "fonte_curta": "Gazetas manuscritas da BPE (Colibri, 2002)",
+    "fonte_citada": "",
+    "excerto": "Fl. 161, p. 197: \"O Bispo de Lamego se espera nesta corte para curarse, tem dilatado a sua jornada, e se lhe tem aggravado a sua queixa: tambem a do Conde de Valladares não tem melhoria; o Marques de Abrantes esta sangrado por huma leve queixa de olhos, e muitas vezes Henrique Vicente de Tavora que tambem está milhor, e a Sra. Marqueza camareira mór.\n\nOs prezepios, os bayles, e a caza das muzicas tem sido muito frequentados estes dias mas o Patio das Comedias ameaça ruina.\"",
+    "observacoes": "Os presépios e outras atividades associadas são descritas como muito frequentados mas o Pátio das Comédias é referido como em iminente ameaça de ruina."
+  },
+  {
+    "id": "e07",
+    "data": "17 de Fevereiro de 1733",
+    "ano": 1733,
+    "mes": 2,
+    "dia": 17,
+    "local": "“Paço”; Presépio de São Roque",
+    "lugares": [
+      "Paço",
+      "São Roque"
+    ],
+    "fonte": "Gazetas manuscritas da Biblioteca Pública de Évora. Vols. 1, 2, 4. Biblioteca – fontes e inventários. Colibri, 2002.",
+    "fonte_curta": "Gazetas manuscritas da BPE (Colibri, 2002)",
+    "fonte_citada": "",
+    "excerto": "Fl. 165v, p. 202: \"Todas as senhoras que vão ao Paço tem visto as festas e ensaios, e algumas levarão suas filhas. /fl. 165v/ Tambem forão Sexta feira 16 senhoras com suas filhas ao prezepio de S. Roque e como nelle arremeda Antonio Antunes com grande propriedade hũa mulher que está parindo, ou fosse acaso, ou sempatia se sentio a Sñra.\"",
+    "observacoes": "Na sexta feira dia dezasseis senhoras com as suas filhas foram ao presépio de São Roque."
+  },
+  {
+    "id": "e08",
+    "data": "1735",
+    "ano": 1735,
+    "local": "“Paço”; Teatro do Bairro Alto e Mouraria",
+    "lugares": [
+      "Paço",
+      "Bairro Alto",
+      "Mouraria"
+    ],
+    "fonte": "FERREIRA, Licínia, O Teatro da Rua dos Condes 1738-1882, tese de doutoramento apresentada à FLUL, 2019.",
+    "fonte_curta": "Ferreira, Licínia (2019)",
+    "fonte_citada": "",
+    "excerto": "p. 16: “O Diário de Évora de 27 de dezembro de 1735 reporta vários espetáculos em Lisboa: ópera; presépio na Mouraria, com música de Francisco António e «falas» de António Antunes; no Bairro Alto Os encantos de Medeia, composição de António Teixeira; uma ópera nova e duas antigas no Paço.”",
+    "observacoes": ""
+  },
+  {
+    "id": "e09",
+    "data": "27 de Dezembro de 1735",
+    "ano": 1735,
+    "mes": 12,
+    "dia": 27,
+    "local": "Presépio na Mouraria",
+    "lugares": [
+      "Mouraria"
+    ],
+    "fonte": "Gazetas manuscritas da Biblioteca Pública de Évora. Vols. 1, 2, 4. Biblioteca – fontes e inventários. Colibri, 2002.",
+    "fonte_curta": "Gazetas manuscritas da BPE (Colibri, 2002)",
+    "fonte_citada": "",
+    "excerto": "Fl. 42v, p. 154: \"Na Mouraria compete o prezepio com novas reprezentaçõens, muzica de Francisco Antonio, e falas de Antonio Antunes com o do Bayrro Alto, em que acabão os Encantos de Medea por hũa nova idea da compozição de Antonio Teixeira.\"",
+    "observacoes": "Na Mouraria existem novas representações de presépios com música realizada por Francisco António de Almeida."
+  },
+  {
+    "id": "e10",
+    "data": "1736",
+    "ano": 1736,
+    "local": "Teatro da Rua dos Condes, Lisboa",
+    "lugares": [
+      "Teatro da Rua dos Condes"
+    ],
+    "fonte": "FERREIRA, Licínia, O Teatro da Rua dos Condes 1738-1882, tese de doutoramento apresentada à FLUL, 2019, p. 29.",
+    "fonte_curta": "Ferreira, Licínia (2019)",
+    "fonte_citada": "Teófilo Braga, no volume da História do teatro português, baixa comedia e a opera: seculo XVIII. Porto: Imprensa Portugueza-Editora, 1871, p. 27",
+    "excerto": "Alexandre Paghetti, empresário da Ópera da Trindade, sofria uma terrível competência com o Teatro do Pátio dos Condes, aonde então representava uma companhia de franceses; estes exploravam o público com comédias, com ballets, com entremezes e também com marionettes ou cenas de presépio. Paghetti recorreu à Mesa do Hospital expondo-lhe todos estes inconvenientes: “que não podia concorrer com os empresários das comédias italianas, a quem o Hospital concedera representá-las dando-lhe aquele Pátio (da rua dos Condes)”",
+    "observacoes": ""
+  },
+  {
+    "id": "e11",
+    "data": "10 de Dezembro de 1737",
+    "ano": 1737,
+    "mes": 12,
+    "dia": 10,
+    "local": "“Paço”; Presépio do Bairro Alto e da Mouraria",
+    "lugares": [
+      "Paço",
+      "Bairro Alto",
+      "Mouraria"
+    ],
+    "fonte": "Gazetas manuscritas da Biblioteca Pública de Évora. Vols. 1, 2, 4. Biblioteca – fontes e inventários. Colibri, 2002.",
+    "fonte_curta": "Gazetas manuscritas da BPE (Colibri, 2002)",
+    "fonte_citada": "",
+    "excerto": "Fl. 221v, p. 299: \"fl. 221/ que ajustaram por 15 moedas, e tambem tinhão ido ao prezepio do Bairro Alto, e entre este e o da Mouraria se repartem os melhores muzicos da Patriarchal, e para a opera vejo huma muzica não mossa mas dizem que boa e dois dançarins esperandoçe outro muzico. O Duque do Cadaval ja chegou e dis que axou em bom estado as coudelarias do Campo de Coimbra.\"",
+    "observacoes": "Depois de mencionar um encontro social organizado pelo Marquês de Alegrete, refere-se que várias senhoras assistiram a uma comédia privada e também ao “prezépio do Bairro Alto”. Os presépios surgem aqui como espaços de espetáculo muito frequentados pela elite, ao ponto de competirem entre si — neste caso, o do Bairro Alto e o da Mouraria."
+  },
+  {
+    "id": "e12",
+    "data": "1738",
+    "ano": 1738,
+    "local": "",
+    "lugares": [],
+    "fonte": "FERREIRA, Licínia, O Teatro da Rua dos Condes 1738-1882, tese de doutoramento apresentada à FLUL, 2019.",
+    "fonte_curta": "Ferreira, Licínia (2019)",
+    "fonte_citada": "BPE Cód. CXIV/1-3d, n.º 2",
+    "excerto": "",
+    "observacoes": "É a única ópera em português que se conhece para estes anos, e poderá estar ligada ao mencionado presépio da horta do conde."
+  },
+  {
+    "id": "e13",
+    "data": "[22 de abril de 1738]",
+    "ano": 1738,
+    "mes": 4,
+    "dia": 22,
+    "data_incerta": true,
+    "local": "[Horta do conde da Ericeira]",
+    "lugares": [
+      "Horta do conde da Ericeira"
+    ],
+    "fonte": "FERREIRA, Licínia, O Teatro da Rua dos Condes 1738-1882, tese de doutoramento apresentada à FLUL, 2019, p. 31.",
+    "fonte_curta": "Ferreira, Licínia (2019)",
+    "fonte_citada": "BPE Cód. CIV/1-8 d, f. 32v",
+    "excerto": "p. 31: “Ao mencionar a horta, parece estar a referir-se às dependências do seu palácio. Mais tarde, nova referência, no mesmo sentido, conferindo o Diário de 22 de abril de 1738: «Sábado se fez a primeira ópera, sem grande concurso, e outra vez entram em ajuste com o conde de Ericeira para a casa do presépio da sua horta»11. Este último segmento do discurso assinala a existência de um presépio (teatro para presépios, espetáculos alusivos à história bíblica, como havia na Mouraria) nas hortas, isto é, no jardim do conde da Ericeira.”",
+    "observacoes": "",
+    "nota_edicao": "Data e local deduzidos do excerto."
+  },
+  {
+    "id": "e14",
+    "data": "3 de setembro de 1740",
+    "ano": 1740,
+    "mes": 9,
+    "dia": 3,
+    "local": "Presépio do Teatro do Bairro Alto",
+    "lugares": [
+      "Bairro Alto"
+    ],
+    "fonte": "Ano Noticioso e Histórico de Luiz Montez Mattozo, 3 de setembro de 1740.",
+    "fonte_curta": "Mattozo, Ano Noticioso e Histórico (1740)",
+    "fonte_citada": "BNP, Cod. 8065",
+    "excerto": "p. 4: “Trabalha-se na casa, em que se hão-de-representar neste Inverno as óperas, junto ao Relógio de São Roque, ou defronte dele, onde se bailava o presépio antigamente”.",
+    "observacoes": "Brevíssima menção a um espaço de representação nos anos quarenta do século XVIII.",
+    "ligacoes": [
+      {
+        "rotulo": "Documento na base HTP do Centro de Estudos de Teatro",
+        "url": "https://htpdocumentos.ceteatro.pt/documentos/noticias-da-chegada-de-partituras-para-a-patriarcal-30-de-julho-e-obras-na-casa-da-opera-3-de-setembro-por-luis-montes-matoso-no-ano-noticioso-e-historico-de-1740-1740"
+      }
+    ]
+  },
+  {
+    "id": "e15",
+    "data": "1767",
+    "ano": 1767,
+    "local": "Presépio e passos da Sagrada Escritura",
+    "lugares": [
+      "Teatro da Graça"
+    ],
+    "fonte": "Ferreira Gomes, Francisco Luís Rosa. «O Teatro da Graça na segunda metade do século XVIII». Faculdade de Letras da Universidade de Lisboa, 2012.",
+    "fonte_curta": "Ferreira Gomes, Francisco Luís Rosa (2012)",
+    "fonte_citada": "ANTT, Cartório Notarial 12B, liv. 743, f. 65’",
+    "excerto": "",
+    "observacoes": "",
+    "nota_edicao": "Lugar (Teatro da Graça) deduzido do estudo citado."
+  },
+  {
+    "id": "e16",
+    "data": "7 de setembro de 1769",
+    "ano": 1769,
+    "mes": 9,
+    "dia": 7,
+    "local": "[Teatro da Graça]",
+    "lugares": [
+      "Teatro da Graça"
+    ],
+    "fonte": "Ferreira Gomes, Francisco Luís Rosa. «O Teatro da Graça na segunda metade do século XVIII». Faculdade de Letras da Universidade de Lisboa, 2012.",
+    "fonte_curta": "Ferreira Gomes, Francisco Luís Rosa (2012)",
+    "fonte_citada": "ANTT, Cartório Notarial, Ofício B, liv. 748, cx. 84, f. 49",
+    "excerto": "p. 46: “que elle Henrique da Costa Passos não terá no dito teatro voz activa, nem passiva, nem domínio ou mando algum que seja; e querendo elle Bruno José do Valle continuar por mais annos no arrendamento do mesmo teatro, não poderá elle Henrique da Costa Passos fazer arrendamento a outrem mas sim conservará a elle arrendatário não podendo exceder o preço annual de sincoenta moedas de ouro e quatro mil e oito centos réis; cada uma; que elle Bruno José do Valle servir-se do dito teatro como seu próprio em todo o tempo que o tiver arrendamento sem impedimento ou controvérsia de pessoa alguma fazendo executar nelle os divertimentos que lhe parecerem sejam de que qualidade foram para o que terá somente livre despotismo”",
+    "observacoes": "O primeiro relato que dá testemunho de espetáculos no Teatro da Graça surge na escritura celebrada a 7 de Setembro de 1769, entre Henrique da Costa Passos e Cláudio José António de Azevedo. Com efeito, o documento menciona o facto de o teatro ter servido, durante quase dois anos (a partir de 1767), para a representação de “presépio”, sendo agora arrendado a Cláudio de Azevedo para o mesmo efeito.",
+    "nota_edicao": "Local deduzido das observações."
+  },
+  {
+    "id": "e17",
+    "data": "1770",
+    "ano": 1770,
+    "local": "Conde e a Condessa Patrícia perseguido por zelos de Amor do Espírito Lucibel",
+    "lugares": [
+      "Teatro da Graça"
+    ],
+    "fonte": "Ferreira Gomes, Francisco Luís Rosa. «O Teatro da Graça na segunda metade do século XVIII». Faculdade de Letras da Universidade de Lisboa, 2012.",
+    "fonte_curta": "Ferreira Gomes, Francisco Luís Rosa (2012)",
+    "fonte_citada": "ANTT, R.M.C., doc. n.º 5150",
+    "excerto": "",
+    "observacoes": "",
+    "nota_edicao": "Lugar (Teatro da Graça) deduzido do estudo citado."
+  },
+  {
+    "id": "e18",
+    "data": "1779",
+    "ano": 1779,
+    "local": "[Teatro da Calçada da Graça]",
+    "lugares": [
+      "Teatro da Graça"
+    ],
+    "fonte": "Ferreira Gomes, Francisco Luís Rosa. «O Teatro da Graça na segunda metade do século XVIII». Faculdade de Letras da Universidade de Lisboa, 2012.",
+    "fonte_curta": "Ferreira Gomes, Francisco Luís Rosa (2012)",
+    "fonte_citada": "ANTT, R.M.C., cx. 183, pasta 1779 (também disponível na base HTP)",
+    "excerto": "p. 66: “Diz Henrique da Costa Passos, empresário do Teatro da Calçada da Graça, que alcançando licença do Senado da Câmara e aviso da Secretaria de Estado para fazer representar naquele teatro o Presépio da Sagrada Escritura”",
+    "observacoes": "O Teatro da Calçada da Graça retoma a sua actividade com um requerimento à Real Mesa Censória feito pelo próprio Henrique da Costa Passos no final de Janeiro, para a apresentação de um espetáculo de presépio:",
+    "ligacoes": [
+      {
+        "rotulo": "Documento na base HTP (Faculdade de Letras de Lisboa)",
+        "url": "http://ww3.fl.ul.pt/cethtp/webinterface/documento.aspx?docId=2507&sM=o&sV=241"
+      }
+    ],
+    "nota_edicao": "Local deduzido do excerto."
+  },
+  {
+    "id": "e19",
+    "data": "1779",
+    "ano": 1779,
+    "local": "[Teatro da Calçada da Graça]",
+    "lugares": [
+      "Teatro da Graça"
+    ],
+    "fonte": "Ferreira Gomes, Francisco Luís Rosa. «O Teatro da Graça na segunda metade do século XVIII». Faculdade de Letras da Universidade de Lisboa, 2012.",
+    "fonte_curta": "Ferreira Gomes, Francisco Luís Rosa (2012)",
+    "fonte_citada": "ANTT, R.M.C., cx. 183, pasta 1779 (também disponível na base HTP)",
+    "excerto": "p. 67: “Diz Henrique da Costa Passos, empresário do Teatro da Calçada da Graça que, alcançando licença do Senado da Câmara e aviso da Secretaria de Estado para fazer representar o Presépio e vários Passos da Sagrada Escritura, abriu a casa, fiado em que este papel é o mesmo que sempre se repetiu em semelhantes Teatros, o qual se acha com aprovações antigas do Santo Oficio e a mesma rainha, quando o consentiu bem saber o que ele continha, por isso se esqueceu de vir buscar a licença a este Supremo Tribunal. E porque o Ministro Inspector suspendeu a representação por esta falta ao mesmo tempo que já quase todos os camarotes se achavam alugados para quarta-feira […] Nestes termos, como a necessidade obriga e não há Tribunal senão quinta-feira, recorre a vossa excelência para que se sirva por sua Portaria de conceder licença interna para quarta-feira se poder representar o dito papel, visto o grave prejuízo que resulta ao povo e ao suplicante. Pede a vossa excelência lhe faça mercê de conceder-lhe a dita licença. Espera receber mercê.”",
+    "observacoes": "Um requerimento deferido pela Censura, pelo que outro documento da RMC testemunha que Henrique da Costa Passos se dirigiu novamente à RMC, não só confirmando a condição por esta imposta para a apresentação do espetáculo como colocando também uma questão problemática. O espetáculo tinha sido cancelado uma vez que a licença de representação não foi levantada por Costa Passos, isto dois dias depois do envio de uma ordem de intimação",
+    "ligacoes": [
+      {
+        "rotulo": "Documento na base HTP (Faculdade de Letras de Lisboa)",
+        "url": "http://ww3.fl.ul.pt/cethtp/webinterface/documento.aspx?docId=2507&sM=o&sV=241"
+      }
+    ],
+    "nota_edicao": "Local deduzido do excerto."
+  },
+  {
+    "id": "e20",
+    "data": "1792",
+    "ano": 1792,
+    "local": "Teatro da Tafularia de Coimbra",
+    "lugares": [
+      "Teatro da Tafularia (Coimbra)"
+    ],
+    "fonte": "Rodrigues Ferreira, Licínia. Catálogo de Manuscritos da Sala Jorge de Faria. 1.ª ed. Imprensa da Universidade de Coimbra, 2024.",
+    "fonte_curta": "Rodrigues Ferreira, Licínia (2024)",
+    "fonte_citada": "“A freira iracunda e zelosa. Comedia nova intitulada A freira iracunda, e zeloza.”",
+    "excerto": "",
+    "observacoes": "Esta referência foi retirada de uma segunda análise do Catálogo Sala Jorge Faria. Pode não ter referências a presépios mas o título é interessante."
+  }
+];
+</script>
+<script>
+(function () {
+  "use strict";
+  var raiz = document.getElementById("pc-cronologia");
+  if (!raiz || !Array.isArray(window.PC_DADOS)) return;
+  var ANO_INI = 1700, ANO_FIM = 1800;
+  var CAMPOS = ["data", "local", "fonte", "fonte_curta", "fonte_citada", "excerto", "observacoes", "nota_edicao"];
+  var reduzMov = !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+  var $ = function (s) { return raiz.querySelector(s); };
+  var esc = function (s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); };
+  /* pesquisa tolerante: ignora acentos, maiúsculas, z/s e y/i, mantendo a posição de cada letra */
+  var dobrarChar = function (c) {
+    var d = c.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+    if (d.length !== 1) d = c.toLowerCase();
+    if (d.length !== 1) return c;
+    return d === "z" ? "s" : d === "y" ? "i" : d;
+  };
+  var dobrar = function (s) { s = String(s || ""); var r = ""; for (var i = 0; i < s.length; i++) r += dobrarChar(s[i]); return r; };
+  var dados = window.PC_DADOS.map(function (e, i) {
+    var r = Object.assign({}, e);
+    CAMPOS.forEach(function (f) { r[f] = String(r[f] || "").normalize("NFC"); });
+    r.lugares = (r.lugares || []).slice();
+    r.ligacoes = (r.ligacoes || []).slice();
+    r._pos = r.ano + ((r.mes || 1) - 1) / 12 + ((r.dia || 1) - 1) / 372;
+    r._chave = r.ano * 10000 + (r.mes || 0) * 100 + (r.dia || 0);
+    r._ordem = i;
+    r._decadas = [];
+    for (var d = Math.floor(r.ano / 10) * 10; d <= Math.floor((r.ano_fim || r.ano) / 10) * 10; d += 10) r._decadas.push(d);
+    r._busca = dobrar([r.data, r.local, r.lugares.join(" "), r.fonte, r.fonte_curta, r.fonte_citada, r.excerto, r.observacoes].join("\n"));
+    r._buscaOculta = dobrar([r.excerto, r.observacoes, r.fonte].join("\n"));
+    return r;
+  });
+  var porId = {};
+  dados.forEach(function (e) { porId[e.id] = e; });
+  var estado = { q: "", decada: "", lugar: "", fonte: "", dir: 1, pagina: 1, porPagina: 25, abertos: new Set(), auto: new Set() };
+  var corpo = $(".pc-tabela tbody"), selDecada = $("#pc-f-decada"), selLugar = $("#pc-f-lugar"), selFonte = $("#pc-f-fonte"), campoQ = $("#pc-q"), selPP = $("#pc-por-pagina");
+  /* opções dos filtros, com contagens */
+  var contar = function (lista) { var m = new Map(); lista.forEach(function (v) { m.set(v, (m.get(v) || 0) + 1); }); return m; };
+  var preencher = function (sel, todas, mapa, rotular, ordenar) {
+    var chaves = Array.from(mapa.keys()).sort(ordenar);
+    sel.innerHTML = '<option value="">' + todas + "</option>" + chaves.map(function (k) { return '<option value="' + esc(k) + '">' + esc(rotular(k)) + " (" + mapa.get(k) + ")</option>"; }).join("");
+  };
+  var alfa = function (a, b) { return String(a).localeCompare(String(b), "pt"); };
+  preencher(selDecada, "Todas", contar([].concat.apply([], dados.map(function (e) { return e._decadas; }))), function (d) { return d + "–" + (+d + 9); }, function (a, b) { return a - b; });
+  preencher(selLugar, "Todos", contar([].concat.apply([], dados.map(function (e) { return e.lugares; }))), String, alfa);
+  preencher(selFonte, "Todas", contar(dados.map(function (e) { return e.fonte_curta; })), String, alfa);
+  var termosDe = function (q) { return dobrar(q.trim()).split(/\s+/).filter(function (t) { return t.length >= 2; }); };
+  var filtrar = function () {
+    var termos = termosDe(estado.q);
+    var lista = dados.filter(function (e) {
+      if (estado.decada && e._decadas.indexOf(+estado.decada) < 0) return false;
+      if (estado.lugar && e.lugares.indexOf(estado.lugar) < 0) return false;
+      if (estado.fonte && e.fonte_curta !== estado.fonte) return false;
+      return termos.every(function (t) { return e._busca.indexOf(t) > -1; });
+    });
+    lista.sort(function (a, b) { return ((a._chave - b._chave) || (a._ordem - b._ordem)) * estado.dir; });
+    return { lista: lista, termos: termos };
+  };
+  var realcar = function (texto, termos) {
+    texto = String(texto || "");
+    if (!termos.length) return esc(texto);
+    var dob = dobrar(texto), marcas = [];
+    termos.forEach(function (t) { var p = 0, i; while ((i = dob.indexOf(t, p)) > -1) { marcas.push([i, i + t.length]); p = i + t.length; } });
+    if (!marcas.length) return esc(texto);
+    marcas.sort(function (a, b) { return a[0] - b[0]; });
+    var juntas = [marcas[0].slice()];
+    marcas.slice(1).forEach(function (m) { var u = juntas[juntas.length - 1]; if (m[0] <= u[1]) u[1] = Math.max(u[1], m[1]); else juntas.push(m.slice()); });
+    var out = "", pos = 0;
+    juntas.forEach(function (m) { out += esc(texto.slice(pos, m[0])) + "<mark>" + esc(texto.slice(m[0], m[1])) + "</mark>"; pos = m[1]; });
+    return out + esc(texto.slice(pos));
+  };
+  var paragrafos = function (texto, termos) {
+    return String(texto).split(/\n{2,}/).map(function (p) { return "<p>" + realcar(p, termos).replace(/\n/g, "<br>") + "</p>"; }).join("");
+  };
+  var rotuloBotao = function (e) { return e.excerto ? "Ler excerto" : e.observacoes ? "Ver notas" : "Ver referência"; };
+  var detalheHTML = function (e, termos) {
+    var h = '<div class="pc-det">';
+    if (e.excerto) h += '<div class="pc-det-excerto"><h4>Excerto</h4><blockquote>' + paragrafos(e.excerto, termos) + "</blockquote></div>";
+    h += '<div class="pc-det-meta">';
+    if (e.observacoes) h += "<h4>Observações</h4>" + paragrafos(e.observacoes, termos);
+    h += "<h4>Referência completa</h4><p>" + realcar(e.fonte, termos) + "</p>";
+    if (e.ligacoes.length) h += "<h4>Ligações</h4><ul>" + e.ligacoes.map(function (l) { return '<li><a href="' + esc(l.url) + '" target="_blank" rel="noopener">' + esc(l.rotulo) + "</a></li>"; }).join("") + "</ul>";
+    if (e.nota_edicao) h += '<p class="pc-nota">Nota de edição: ' + esc(e.nota_edicao) + "</p>";
+    return h + "</div></div>";
+  };
+  var linhaHTML = function (e, termos) {
+    var aberto = estado.abertos.has(e.id);
+    var h = '<tr class="pc-linha' + (aberto ? " pc-aberta" : "") + '" id="pc-l-' + e.id + '" tabindex="-1">';
+    h += '<td class="pc-c-data" data-rotulo="Data"><span class="pc-data">' + esc(e.data) + "</span></td>";
+    h += '<td data-rotulo="Local da apresentação">' + (e.local ? realcar(e.local, termos) : '<span class="pc-vazio">Não indicado</span>') + "</td>";
+    h += '<td data-rotulo="Fonte">' + realcar(e.fonte_curta, termos) + "</td>";
+    h += '<td data-rotulo="Fonte citada">' + (e.fonte_citada ? realcar(e.fonte_citada, termos) : '<span class="pc-vazio" aria-hidden="true">—</span><span class="pc-sr">sem fonte citada</span>') + "</td>";
+    h += '<td class="pc-c-acao"><button type="button" class="pc-alternar" data-id="' + e.id + '" aria-expanded="' + aberto + '" aria-controls="pc-d-' + e.id + '" data-rotulo="' + rotuloBotao(e) + '"><span class="pc-alt-txt">' + (aberto ? "Fechar" : rotuloBotao(e)) + '</span><span class="pc-sr"> (' + esc(e.data) + ")</span></button></td></tr>";
+    h += '<tr class="pc-detalhe" id="pc-d-' + e.id + '"' + (aberto ? "" : " hidden") + '><td colspan="5">' + detalheHTML(e, termos) + "</td></tr>";
+    return h;
+  };
+  var paginaAtual = [];
+  var render = function () {
+    var res = filtrar(), lista = res.lista, total = lista.length;
+    var pp = estado.porPagina || Math.max(total, 1);
+    var nPag = Math.max(1, Math.ceil(total / pp));
+    if (estado.pagina > nPag) estado.pagina = nPag;
+    var ini = (estado.pagina - 1) * pp, fim = Math.min(ini + pp, total);
+    paginaAtual = lista.slice(ini, fim);
+    corpo.innerHTML = total ? paginaAtual.map(function (e) { return linhaHTML(e, res.termos); }).join("") :
+      '<tr><td colspan="5" class="pc-sem">Nenhum registo corresponde à pesquisa e aos filtros escolhidos. <button type="button" class="pc-btn-texto" data-acao="limpar">Limpar filtros</button></td></tr>';
+    var filtrado = estado.q.trim() || estado.decada || estado.lugar || estado.fonte;
+    $(".pc-estado").textContent = filtrado ? total + " de " + dados.length + (dados.length === 1 ? " registo" : " registos") + " correspondem aos filtros" : dados.length + " registos";
+    $(".pc-intervalo").textContent = total ? (ini + 1) + "–" + fim + " de " + total : "0 de 0";
+    $('[data-acao="anterior"]').disabled = estado.pagina <= 1;
+    $('[data-acao="seguinte"]').disabled = estado.pagina >= nPag;
+    $(".pc-c-data").setAttribute("aria-sort", estado.dir === 1 ? "ascending" : "descending");
+    atualizarBotaoTodos();
+    var visiveis = new Set(lista.map(function (e) { return e.id; }));
+    raiz.querySelectorAll("[data-tl-id]").forEach(function (b) { b.classList.toggle("pc-tl-fora", !visiveis.has(b.getAttribute("data-tl-id"))); });
+  };
+  var atualizarBotaoTodos = function () {
+    var b = $('[data-acao="abrir-todos"]');
+    var todos = paginaAtual.length > 0 && paginaAtual.every(function (e) { return estado.abertos.has(e.id); });
+    b.textContent = todos ? "Fechar todos os registos" : "Abrir todos os registos";
+    b.disabled = paginaAtual.length === 0;
+  };
+  var alternar = function (id, abrir) {
+    var botao = corpo.querySelector('.pc-alternar[data-id="' + id + '"]');
+    var det = document.getElementById("pc-d-" + id), linha = document.getElementById("pc-l-" + id);
+    if (abrir === undefined) abrir = !estado.abertos.has(id);
+    if (abrir) estado.abertos.add(id); else estado.abertos.delete(id);
+    estado.auto.delete(id);
+    if (botao) { botao.setAttribute("aria-expanded", String(abrir)); botao.querySelector(".pc-alt-txt").textContent = abrir ? "Fechar" : botao.getAttribute("data-rotulo"); }
+    if (det) det.hidden = !abrir;
+    if (linha) linha.classList.toggle("pc-aberta", abrir);
+    atualizarBotaoTodos();
+  };
+  var limpar = function () {
+    estado.q = estado.decada = estado.lugar = estado.fonte = "";
+    campoQ.value = ""; selDecada.value = ""; selLugar.value = ""; selFonte.value = "";
+    estado.auto.forEach(function (id) { estado.abertos.delete(id); });
+    estado.auto.clear();
+    estado.pagina = 1;
+  };
+  var focar = function (id) {
+    var lista = filtrar().lista;
+    if (!lista.some(function (e) { return e.id === id; })) { limpar(); lista = filtrar().lista; }
+    var idx = lista.findIndex(function (e) { return e.id === id; });
+    if (estado.porPagina) estado.pagina = Math.floor(idx / estado.porPagina) + 1;
+    estado.abertos.add(id); estado.auto.delete(id);
+    render();
+    var linha = document.getElementById("pc-l-" + id);
+    if (!linha) return;
+    linha.scrollIntoView({ block: "center", behavior: reduzMov ? "auto" : "smooth" });
+    linha.focus({ preventScroll: true });
+    linha.classList.remove("pc-destaque"); void linha.offsetWidth; linha.classList.add("pc-destaque");
+    setTimeout(function () { linha.classList.remove("pc-destaque"); }, 1900);
+  };
+  var irParaTabela = function () {
+    var t = $(".pc-barra"), r = t.getBoundingClientRect();
+    if (r.top < 0) t.scrollIntoView({ block: "start", behavior: reduzMov ? "auto" : "smooth" });
+  };
+  var csv = function () {
+    var lista = filtrar().lista;
+    var cab = ["Data", "Local da apresentação", "Lugares", "Fonte", "Fonte citada", "Excerto", "Observações", "Ligações", "Nota de edição"];
+    var linhas = [cab].concat(lista.map(function (e) { return [e.data, e.local, e.lugares.join(" | "), e.fonte, e.fonte_citada, e.excerto, e.observacoes, e.ligacoes.map(function (l) { return l.url; }).join(" "), e.nota_edicao]; }));
+    var txt = linhas.map(function (l) { return l.map(function (v) { return '"' + String(v == null ? "" : v).replace(/"/g, '""') + '"'; }).join(";"); }).join("\r\n");
+    var url = URL.createObjectURL(new Blob(["\ufeff" + txt], { type: "text/csv;charset=utf-8" }));
+    var a = document.createElement("a");
+    a.href = url; a.download = "cronologia-presepios.csv"; a.style.display = "none";
+    document.body.appendChild(a); a.click();
+    setTimeout(function () { URL.revokeObjectURL(url); a.remove(); }, 500);
+  };
+  /* linha do tempo */
+  var tlPontos = $(".pc-tl-pontos"), tlPeriodos = $(".pc-tl-periodos"), tlEscala = $(".pc-tl-escala"), tlTrilho = $(".pc-tl-trilho"), dica = $(".pc-tl-dica");
+  var ordemTl = dados.slice().sort(function (a, b) { return a._pos - b._pos; });
+  ordemTl.forEach(function (e) {
+    var b = document.createElement("button");
+    b.type = "button";
+    b.className = e.ano_fim ? "pc-tl-barra" : "pc-tl-ponto" + (e.data_incerta ? " pc-tl-incerta" : "");
+    b.setAttribute("data-tl-id", e.id);
+    b.setAttribute("aria-label", e.data + ", " + (e.local || "local não indicado"));
+    b.tabIndex = -1;
+    (e.ano_fim ? tlPeriodos : tlPontos).appendChild(b);
+  });
+  var botoesTl = Array.from(raiz.querySelectorAll("[data-tl-id]")).sort(function (a, b) { return porId[a.getAttribute("data-tl-id")]._pos - porId[b.getAttribute("data-tl-id")]._pos; });
+  if (botoesTl.length) botoesTl[0].tabIndex = 0;
+  var disporTl = function () {
+    var w = tlTrilho.clientWidth;
+    if (!w) return;
+    var pad = 10, util = w - pad * 2;
+    var x = function (ano) { return pad + (ano - ANO_INI) / (ANO_FIM - ANO_INI) * util; };
+    var faixas = [], DIST = 15, PASSO = 17;
+    Array.from(tlPontos.children).sort(function (a, b) { return porId[a.getAttribute("data-tl-id")]._pos - porId[b.getAttribute("data-tl-id")]._pos; }).forEach(function (b) {
+      var px = x(porId[b.getAttribute("data-tl-id")]._pos), f = 0;
+      while (faixas[f] !== undefined && px - faixas[f] < DIST) f++;
+      faixas[f] = px;
+      b.style.left = px + "px"; b.style.bottom = (5 + f * PASSO) + "px";
+    });
+    tlPontos.style.height = (Math.max(faixas.length, 1) * PASSO + 10) + "px";
+    Array.from(tlPeriodos.children).forEach(function (b) {
+      var e = porId[b.getAttribute("data-tl-id")];
+      b.style.left = x(e.ano) + "px"; b.style.width = Math.max(x(e.ano_fim) - x(e.ano), 12) + "px";
+    });
+    var passo = util / 10 >= 46 ? 10 : 20, h = "";
+    for (var a = ANO_INI; a <= ANO_FIM; a += 10) {
+      h += '<span class="pc-tl-marca" style="left:' + x(a) + 'px"></span>';
+      if ((a - ANO_INI) % passo === 0) h += '<span class="pc-tl-ano" style="left:' + x(a) + 'px">' + a + "</span>";
+    }
+    tlEscala.innerHTML = h;
+  };
+  var mostrarDica = function (b) {
+    var e = porId[b.getAttribute("data-tl-id")];
+    dica.innerHTML = "<strong>" + esc(e.data) + "</strong>" + esc(e.local || "Local não indicado");
+    dica.hidden = false;
+    var rb = b.getBoundingClientRect(), rt = tlTrilho.getBoundingClientRect();
+    var esq = rb.left + rb.width / 2 - rt.left - dica.offsetWidth / 2;
+    esq = Math.max(0, Math.min(esq, rt.width - dica.offsetWidth));
+    dica.style.left = esq + "px";
+    dica.style.top = (rb.top - rt.top - dica.offsetHeight - 8) + "px";
+  };
+  var esconderDica = function () { dica.hidden = true; };
+  botoesTl.forEach(function (b, i) {
+    b.addEventListener("mouseenter", function () { mostrarDica(b); });
+    b.addEventListener("mouseleave", esconderDica);
+    b.addEventListener("focus", function () { mostrarDica(b); });
+    b.addEventListener("blur", esconderDica);
+    b.addEventListener("keydown", function (ev) {
+      var j = { ArrowRight: i + 1, ArrowDown: i + 1, ArrowLeft: i - 1, ArrowUp: i - 1, Home: 0, End: botoesTl.length - 1 }[ev.key];
+      if (j === undefined) return;
+      ev.preventDefault();
+      j = Math.max(0, Math.min(j, botoesTl.length - 1));
+      botoesTl.forEach(function (o) { o.tabIndex = -1; });
+      botoesTl[j].tabIndex = 0; botoesTl[j].focus();
+    });
+  });
+  disporTl();
+  if (window.ResizeObserver) new ResizeObserver(disporTl).observe(tlTrilho); else window.addEventListener("resize", disporTl);
+  /* eventos */
+  raiz.addEventListener("click", function (ev) {
+    var alvo = ev.target.closest("button");
+    if (!alvo || !raiz.contains(alvo)) return;
+    var acao = alvo.getAttribute("data-acao");
+    if (alvo.classList.contains("pc-alternar")) return alternar(alvo.getAttribute("data-id"));
+    if (alvo.hasAttribute("data-tl-id")) { esconderDica(); return focar(alvo.getAttribute("data-tl-id")); }
+    if (alvo.classList.contains("pc-ordenar")) { estado.dir *= -1; estado.pagina = 1; return render(); }
+    if (acao === "abrir-todos") {
+      var abrir = !paginaAtual.every(function (e) { return estado.abertos.has(e.id); });
+      paginaAtual.forEach(function (e) { alternar(e.id, abrir); });
+      return;
+    }
+    if (acao === "limpar") { limpar(); render(); campoQ.focus(); return; }
+    if (acao === "anterior" && estado.pagina > 1) { estado.pagina--; render(); irParaTabela(); return; }
+    if (acao === "seguinte") { estado.pagina++; render(); irParaTabela(); return; }
+    if (acao === "csv") csv();
+  });
+  var temporizador;
+  campoQ.addEventListener("input", function () {
+    clearTimeout(temporizador);
+    temporizador = setTimeout(function () {
+      estado.q = campoQ.value; estado.pagina = 1;
+      estado.auto.forEach(function (id) { estado.abertos.delete(id); });
+      estado.auto.clear();
+      var termos = termosDe(estado.q);
+      if (termos.length && estado.q.trim().length >= 3) {
+        filtrar().lista.forEach(function (e) {
+          var oculto = termos.some(function (t) { return e._buscaOculta.indexOf(t) > -1; });
+          if (oculto && !estado.abertos.has(e.id)) { estado.abertos.add(e.id); estado.auto.add(e.id); }
+        });
+      }
+      render();
+    }, 220);
+  });
+  [[selDecada, "decada"], [selLugar, "lugar"], [selFonte, "fonte"]].forEach(function (par) {
+    par[0].addEventListener("change", function () { estado[par[1]] = par[0].value; estado.pagina = 1; render(); });
+  });
+  selPP.addEventListener("change", function () { estado.porPagina = +selPP.value; estado.pagina = 1; render(); });
+  render();
+})();
+</script>
